@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>العطارة | طياره</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --main: #8e44ad; --accent: #9b59b6; --bg: #f8f4ff; --white: #ffffff; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); margin: 0; padding-bottom: 40px; }
+        header { 
+            background: linear-gradient(135deg, var(--main), var(--accent)); 
+            color: white; padding: 60px 20px; border-radius: 0 0 50px 50px; text-align: center; position: relative; 
+        }
+        .back-nav { position: absolute; top: 25px; right: 25px; color: white; font-size: 22px; }
+        .section-icon-container {
+            background: var(--white); width: 90px; height: 90px; border-radius: 30px; display: flex; align-items: center; 
+            justify-content: center; margin: -45px auto 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 4px solid var(--bg);
+        }
+        .section-icon-container i { font-size: 40px; color: var(--main); }
+        .prod-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; max-width: 800px; margin: auto; }
+        .prod-card {
+            background: var(--white); border-radius: 25px; padding: 15px; text-align: center;
+            transition: 0.3s; border: 1px solid rgba(0,0,0,0.05);
+        }
+        .img-placeholder { background: #fdf0ff; height: 100px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; color: var(--main); font-size: 35px; }
+        .price-tag { display: inline-block; background: #f3e5f5; color: var(--main); padding: 4px 12px; border-radius: 12px; font-weight: 800; margin-bottom: 15px; }
+        .whatsapp-btn { background: #25d366; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 15px; font-weight: 700; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-nav"><i class="fas fa-arrow-right"></i></a>
+        <h1 style="margin:0; font-weight: 900;">عطارة وتوابل</h1>
+    </header>
+    <div class="section-icon-container"><i class="fas fa-mortar-pestle"></i></div>
+    <div class="prod-grid" id="mainGrid">
+        <div class="prod-card">
+            <div class="img-placeholder"><i class="fas fa-pepper-hot"></i></div>
+            <h3>فلفل أسود</h3><span class="price-tag">300 ج.م</span>
+            <a href="https://wa.me/201070764187?text=السلام عليكم، أريد طلب فلفل أسود من قسم العطارة" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> اطلب الآن</a>
+        </div>
+        <div class="prod-card">
+            <div class="img-placeholder"><i class="fas fa-leaf"></i></div>
+            <h3>كمون مطحون</h3><span class="price-tag">300 ج.م</span>
+            <a href="https://wa.me/201070764187?text=السلام عليكم، أريد طلب كمون من قسم العطارة" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> اطلب الآن</a>
+        </div>
+    </div>
+    <script>
+        const myCategory = "عطارة";
+        window.onload = function() {
+            const container = document.getElementById('mainGrid');
+            const prods = JSON.parse(localStorage.getItem('prods') || '[]').filter(p => p.cat === myCategory);
+            const staff = JSON.parse(localStorage.getItem('staff') || '[]');
+            prods.forEach(p => {
+                const phone = staff.length > 0 ? staff[0].phone : "201070764187";
+                const msg = `السلام عليكم، أريد طلب ${p.name} من قسم العطارة`;
+                container.innerHTML += `<div class="prod-card"><div class="img-placeholder"><i class="fas fa-box"></i></div><h3>${p.name}</h3><span class="price-tag">${p.price} ج.م</span><a href="https://wa.me/${phone}?text=${encodeURIComponent(msg)}" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> اطلب الآن</a></div>`;
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>طياره | الجيل الجديد ⚡</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg: #eef2f7; --main: #3b82f6; --shadow: #d1d9e6; --light: #ffffff; --text: #1e293b; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; padding-bottom: 100px; color: var(--text); }
+        .header-container { padding: 40px 20px; text-align: center; background: var(--bg); }
+        .header-container h1 { font-size: 3rem; margin: 0; color: var(--main); font-weight: 900; }
+        .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; }
+        .modern-card { 
+            background: var(--bg); padding: 25px 10px; border-radius: 25px; 
+            text-decoration: none; text-align: center; color: var(--text);
+            box-shadow: 8px 8px 15px var(--shadow), -8px -8px 15px var(--light);
+            transition: 0.3s;
+        }
+        .modern-card:active { transform: scale(0.95); box-shadow: inset 4px 4px 8px var(--shadow), inset -4px -4px 8px var(--light); }
+        .modern-card i { font-size: 2.5rem; margin-bottom: 10px; color: var(--main); }
+        .modern-card span { display: block; font-weight: 700; font-size: 1.1rem; }
+        .floating-cart {
+            position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px;
+            background: var(--main); border-radius: 20px; display: flex;
+            align-items: center; justify-content: center; color: white;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <h1>طياره</h1>
+        <p style="opacity: 0.6;">السرعة أصبحت أكثر ذكاءً ⚡</p>
+    </div>
+
+    <div class="cat-grid">
+        <a href="grocery.html" class="modern-card"><i class="fas fa-box-open"></i><span>البقالة</span></a>
+        <a href="dairy.html" class="modern-card"><i class="fas fa-cheese"></i><span>الألبان</span></a>
+        <a href="attara.html" class="modern-card"><i class="fas fa-seedling"></i><span>العطارة</span></a>
+        <a href="drinks.html" class="modern-card"><i class="fas fa-wine-bottle"></i><span>المشروبات</span></a>
+    </div>
+
+    <a href="login.html" class="floating-cart"><i class="fas fa-user-shield"></i></a>
+</body>
+</html>

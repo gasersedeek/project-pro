@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة القيادة الأسطورية ⚔️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --main: #1e293b; --accent: #38bdf8; --red: #ef4444; }
+        body { font-family: 'Cairo'; background: #f1f5f9; margin: 0; padding-bottom: 80px; }
+        .header { background: var(--main); color: white; padding: 25px; text-align: center; border-bottom: 5px solid var(--accent); }
+        .section { display: none; padding: 20px; animation: fadeIn 0.4s; }
+        .section.active { display: block; }
+        .card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 12px; border: 1px solid #ddd; font-family: 'Cairo'; }
+        .btn { background: var(--accent); color: var(--main); border: none; padding: 12px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: 900; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; border-radius: 12px; overflow: hidden; }
+        th, td { padding: 12px; text-align: center; border-bottom: 1px solid #eee; }
+        th { background: var(--main); color: white; }
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: var(--main); display: flex; justify-content: space-around; padding: 12px 0; }
+        .nav-btn { color: #94a3b8; background: none; border: none; font-size: 12px; cursor: pointer; }
+        .nav-btn.active { color: var(--accent); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2 style="margin:0">مركز تحكم طياره 🦅</h2>
+</div>
+
+<div id="s1" class="section active">
+    <div class="card">
+        <h3>📊 ملخص عام</h3>
+        <p>عدد الموظفين: <span id="sCount" style="color:var(--accent); font-weight:900">0</span></p>
+        <p>إجمالي المنتجات: <span id="pCount" style="color:var(--accent); font-weight:900">0</span></p>
+    </div>
+</div>
+
+<div id="s2" class="section">
+    <div class="card">
+        <h3>📦 إضافة منتج جديد</h3>
+        <input type="text" id="pName" placeholder="اسم المنتج">
+        <input type="number" id="pPrice" placeholder="السعر">
+        <select id="pCat">
+            <option value="بقالة">بقالة</option>
+            <option value="ألبان">ألبان</option>
+            <option value="مشروبات">مشروبات</option>
+            <option value="عطارة">عطارة</option>
+        </select>
+        <button class="btn" onclick="saveProd()">إضافة للمتجر ✅</button>
+    </div>
+</div>
+
+<div id="s3" class="section">
+    <div class="card">
+        <h3>👤 تسجيل موظف جديد</h3>
+        <input type="text" id="stName" placeholder="اسم الموظف">
+        <input type="text" id="stCode" placeholder="كود الدخول (رقم)">
+        <button class="btn" onclick="saveStaff()">تعيين الموظف 🫡</button>
+    </div>
+</div>
+
+<div id="s4" class="section">
+    <div class="card" style="overflow-x: auto;">
+        <h3>👥 كشف الموظفين والأداء</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>الموظف</th>
+                    <th>الكود</th>
+                    <th>الطلبات</th>
+                    <th>الراتب</th>
+                    <th>حذف</th>
+                </tr>
+            </thead>
+            <tbody id="staffTable"></tbody>
+        </table>
+    </div>
+</div>
+
+<div id="s5" class="section">
+    <div class="card">
+        <h3>💰 تحديث الأداء والراتب</h3>
+        <select id="staffSelect"></select>
+        <input type="number" id="upOrders" placeholder="تحديث عدد الطلبات">
+        <input type="number" id="upSalary" placeholder="تحديث الراتب">
+        <button class="btn" onclick="updateFinance()">حفظ البيانات المالية 💵</button>
+    </div>
+</div>
+
+<div class="nav-bar">
+    <button class="nav-btn active" onclick="show(1, this)"><i class="fas fa-chart-line"></i><br>عام</button>
+    <button class="nav-btn" onclick="show(2, this)"><i class="fas fa-plus-circle"></i><br>منتجات</button>
+    <button class="nav-btn" onclick="show(3, this)"><i class="fas fa-user-plus"></i><br>موظفين</button>
+    <button class="nav-btn" onclick="show(4, this)"><i class="fas fa-users-cog"></i><br>إدارة</button>
+    <button class="nav-btn" onclick="show(5, this)"><i class="fas fa-wallet"></i><br>مالية</button>
+</div>
+
+<script>
+    function show(n, btn) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('s'+n).classList.add('active');
+        btn.classList.add('active');
+        loadData();
+    }
+
+    function saveProd() {
+        let ps = JSON.parse(localStorage.getItem('prods') || '[]');
+        ps.push({name: pName.value, price: pPrice.value, cat: pCat.value});
+        localStorage.setItem('prods', JSON.stringify(ps));
+        alert("تم إضافة المنتج!");
+        pName.value = ''; pPrice.value = '';
+    }
+
+    function saveStaff() {
+        let ss = JSON.parse(localStorage.getItem('staff') || '[]');
+        ss.push({name: stName.value, code: stCode.value, orders: 0, salary: 0});
+        localStorage.setItem('staff', JSON.stringify(ss));
+        alert("تم تعيين الموظف!");
+        stName.value = ''; stCode.value = '';
+        loadData();
+    }
+
+    function updateFinance() {
+        let ss = JSON.parse(localStorage.getItem('staff') || '[]');
+        let index = ss.findIndex(x => x.code === staffSelect.value);
+        if(index !== -1) {
+            ss[index].orders = upOrders.value || ss[index].orders;
+            ss[index].salary = upSalary.value || ss[index].salary;
+            localStorage.setItem('staff', JSON.stringify(ss));
+            alert("تم تحديث بيانات " + ss[index].name);
+            loadData();
+        }
+    }
+
+    function deleteStaff(index) {
+        if(confirm("حذف الموظف نهائياً؟")) {
+            let ss = JSON.parse(localStorage.getItem('staff') || '[]');
+            ss.splice(index, 1);
+            localStorage.setItem('staff', JSON.stringify(ss));
+            loadData();
+        }
+    }
+
+    function loadData() {
+        let ss = JSON.parse(localStorage.getItem('staff') || '[]');
+        let ps = JSON.parse(localStorage.getItem('prods') || '[]');
+        
+        document.getElementById('sCount').innerText = ss.length;
+        document.getElementById('pCount').innerText = ps.length;
+
+        document.getElementById('staffTable').innerHTML = ss.map((s, i) => `
+            <tr>
+                <td><b>${s.name}</b></td>
+                <td><code>${s.code}</code></td>
+                <td style="color:var(--accent)">${s.orders}</td>
+                <td>${s.salary} ج.م</td>
+                <td><i class="fas fa-trash" style="color:var(--red)" onclick="deleteStaff(${i})"></i></td>
+            </tr>
+        `).join('');
+
+        document.getElementById('staffSelect').innerHTML = ss.map(s => `<option value="${s.code}">${s.name}</option>`).join('');
+    }
+    window.onload = loadData;
+</script>
+</body>
+</html>
